@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Booking Appointment App</title>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <body>
+    <div class="container">
+     <div class="row">
+      <div class="col-md-8 mx-auto">
+       <h1>Booking Appointment App</h1>
+       <form onsubmit="adduser(event)">
+        <input type="hidden" id="editIndex">
+        <div class="form-group">
+            <label for="name">Name :</label>
+            <input type="text" id="username" name="username" class="form-control" required>
+           </div>
+        <div class="form-group">
+         <label for="email">EmailId:</label>
+         <input type="email" id="emailId" name="emailId" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="number" id="phonenumber" name="phonenumber" class="form-control" required>
+           </div>
+        <button type="submit" id="addButton" class="btn btn-primary">Add User</button>
+       </form>
+       <br>
+       <table class="table table-striped table-bordered" id="expenseTable">
+        <thead>
+         <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Actions</th>
+         </tr>
+        </thead>
+        <tbody></tbody>
+       </table>
+      </div>
+     </div>
+    </div>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.4/axios.min.js"></script>
+    
+    <script>
+    // add items to crud crud
+        function adduser(event) {
+      event.preventDefault();
+      const name=event.target.username.value;
+      const email=event.target.emailId.value;
+      const phonenumber=event.target.phonenumber.value;
+    
+      const obj={
+        name,
+        email,
+        phonenumber,
+
+      }
+      axios.post('https://crudcrud.com/api/63211d5e6cda4e5299fc5e9a94ac3b90/appointmentdata',obj) 
+       .then((response) =>{ showNewUserOnScreen(response.data)})
+       .catch(err => console.error(err));
+   }
+   
+   function showNewUserOnScreen(user){
+    document.getElementById('username').value='';
+    document.getElementById('emailId').value='';
+    document.getElementById('phonenumber').value='';
+    var tableBody = document.getElementById('expenseTable').getElementsByTagName('tbody')[0];
+          var row = '<tr><td>' + user.name + '</td><td>' + user.email + '</td><td>' + user.phonenumber + '</td><td><button type="button" class="btn btn-sm btn-primary" onclick="edituser(this.parentNode.parentNode)">Edit</button> <button type="button" class="btn btn-sm btn-danger" onclick="removeuser(this.parentNode.parentNode)">Delete</button></td></tr>';
+          tableBody.insertAdjacentHTML('beforeend', row);
+}
+</script>
+</body>
+</html>
